@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-permission` will be documented in this file
 
+## 2.15.0 - 2018-08-15
+- Make assigning the same role or permission twice not throw an exception
+
+## 2.14.0 - 2018-08-13
+- Allow using another key name than `model_id` by defining new `columns` array with `model_morph_key` key in config file. This improves UUID compatibility as discussed in #777.
+
+## 2.13.0 - 2018-08-02
+- Fix issue with null values passed to syncPermissions & syncRoles
+
+## 2.12.2 - 2018-06-13
+- added hasAllPermissions method
+
+## 2.12.1 - 2018-04-23
+- Reverted 2.12.0. REVERTS: "Add ability to pass guard name to gate methods like can()". Requires reworking of guard handling if we're going to add this feature. 
+
+## 2.12.0 - 2018-04-22
+- Add ability to pass guard name to gate methods like can()
+
 ## 2.11.0 - 2018-04-16
 - Improve speed of permission lookups with findByName, findById, findOrCreate
 

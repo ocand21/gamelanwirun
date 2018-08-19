@@ -103,6 +103,8 @@ class IklanController extends Controller
           $location = public_path('images/iklans/' . $filename);
           Image::make($image2)->save($location);
           $iklan->image2 = $filename;
+        } else {
+          $iklan->image2 = 'logo.png';
         }
 
         if ($request->hasFile('image3')) {
@@ -111,6 +113,8 @@ class IklanController extends Controller
           $location = public_path('images/iklans/' . $filename);
           Image::make($image3)->save($location);
           $iklan->image3 = $filename;
+        } else {
+          $iklan->image3 = 'logo.png';
         }
 
         if ($request->hasFile('image4')) {
@@ -119,6 +123,8 @@ class IklanController extends Controller
           $location = public_path('images/iklans/' . $filename);
           Image::make($image4)->save($location);
           $iklan->image4 = $filename;
+        } else {
+          $iklan->image4 = 'logo.png';
         }
 
         if ($request->hasFile('image5')) {
@@ -127,6 +133,8 @@ class IklanController extends Controller
           $location = public_path('images/iklans/' . $filename);
           Image::make($image5)->save($location);
           $iklan->image5 = $filename;
+        } else {
+          $iklan->image4 = 'logo.png';
         }
 
         $iklan->save();

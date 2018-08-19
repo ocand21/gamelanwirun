@@ -19,12 +19,12 @@
 							<ul>
 								<li>
 									<input type="checkbox" id="brand1" value="">
-									<label for="brand1"><span></span>Remember me</label>
+									<label for="brand1"><span></span>Tetap Login</label>
 								</li>
 							</ul>
 						</div>
 						<div class="forgot">
-							<a href="{{route('password.request')}}">Forgot password?</a>
+							<a href="{{route('password.request')}}">Lupa Password?</a>
 						</div>
 						<div class="clearfix"> </div>
 					</div>

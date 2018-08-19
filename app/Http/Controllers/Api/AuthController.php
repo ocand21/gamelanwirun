@@ -13,6 +13,9 @@ use App\Http\Controllers\Controller;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+use Illuminate\Support\Facades\Password;
+use Illuminate\Mail\Message;
+
 class AuthController extends Controller
 {
     public function store(Request $request){
@@ -123,6 +126,63 @@ class AuthController extends Controller
       ];
 
       return response()->json($response, 404);
+
+
+    }
+
+    public function recover(Request $request){
+      $user = User::where('email', $request->email)->first();
+      if (!$user) {
+
+        $response = [
+          'msg' => 'Email tidak ditemukan.'
+
+        ];
+
+        return response()->json($response, 401);
+
+        // $error_message = "Email tidak ditemukan.";
+        // return response()->json([
+        //   'success' => false,
+        //   'error' => ['email' => $error_message]
+        // ], 401);
+      }
+
+      try {
+        Password::sendResetLink($request->only('email'), function(Message $message){
+          $message->subject('[Your Password Reset Link]');
+        });
+      } catch (\Exception $e) {
+        $error_message = $e->getMessage();
+        return response()->json([
+          'success' => false,
+          'error' => $error_message
+        ], 401);
+      }
+
+      $response = [
+        'msg' => 'Email reset password telah dikirim! Silakan cek email Anda.'
+      ];
+
+      return response()->json($response, 401);
+    }
+
+    public function logout(Request $request){
+      $this->validate($request, ['token' => 'required']);
+
+      try {
+        JWTAuth::invalidate($request->input('token'));
+        return response()->json([
+          'success' => true,
+          'message' => 'Berhasil logout'
+        ]);
+
+      } catch (JWTException $e) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Logout gagal, silakan coba lagi'
+        ], 500);
+      }
 
     }
 }

@@ -32,7 +32,7 @@ trait HasPermissions
             config('permission.models.permission'),
             'model',
             config('permission.table_names.model_has_permissions'),
-            'model_id',
+            config('permission.column_names.model_morph_key'),
             'permission_id'
         );
     }
@@ -113,7 +113,10 @@ trait HasPermissions
         }
 
         if (is_int($permission)) {
-            $permission = app(Permission::class)->findById($permission, $this->getDefaultGuardName());
+            $permission = app(Permission::class)->findById(
+                $permission,
+                $guardName ?? $this->getDefaultGuardName()
+            );
         }
 
         return $this->hasDirectPermission($permission) || $this->hasPermissionViaRole($permission);
@@ -139,6 +142,28 @@ trait HasPermissions
         }
 
         return false;
+    }
+
+    /**
+     * Determine if the model has all of the given permissions.
+     *
+     * @param array ...$permissions
+     *
+     * @return bool
+     */
+    public function hasAllPermissions(...$permissions): bool
+    {
+        if (is_array($permissions[0])) {
+            $permissions = $permissions[0];
+        }
+
+        foreach ($permissions as $permission) {
+            if (! $this->hasPermissionTo($permission)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -215,12 +240,16 @@ trait HasPermissions
             ->map(function ($permission) {
                 return $this->getStoredPermission($permission);
             })
+            ->filter(function ($permission) {
+                return $permission instanceof Permission;
+            })
             ->each(function ($permission) {
                 $this->ensureModelSharesGuard($permission);
             })
+            ->map->id
             ->all();
 
-        $this->permissions()->saveMany($permissions);
+        $this->permissions()->sync($permissions, false);
 
         $this->forgetCachedPermissions();
 

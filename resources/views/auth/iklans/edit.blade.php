@@ -30,7 +30,9 @@
                     @endif
                   </tr>
                   <tr>
-                    @if($iklan->image2)
+                    @if($iklan->image2 = 'logo.png')
+                    <td><img src="{{ asset('images/iklans/' . $iklan->image2) }}" align="center" class="img-responsive"></td>
+                    @else
                     <td><img src="{{ asset('images/iklans/' . $iklan->image2) }}" align="center" class="img-responsive"></td>
                     <td>
                       <form method="POST" action="{{ route('iklans.delimage2', $iklan->id) }}">

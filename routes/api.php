@@ -59,7 +59,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function(){
 		'uses' => 'Api\AuthController@signin'
 	]);
 
-	Route::post('recover', [
+	Route::post('/user/recover', [
 		'uses' => 'Api\AuthController@recover']);
 
 	Route::post('/user/changePassword', [

@@ -2,6 +2,7 @@
 
 namespace App;
 
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Iklan;
@@ -9,6 +10,8 @@ use App\Iklan;
 class User extends Authenticatable
 {
     use Notifiable;
+
+
 
     /**
      * The attributes that are mass assignable.

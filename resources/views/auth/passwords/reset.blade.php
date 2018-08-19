@@ -24,6 +24,7 @@
 					</div>
 					<input type="submit" id="button" name="submit" value="Reset Password">
 				</form>
+        <button>Kembali</button>
 			</div>
       </div>
 </div>

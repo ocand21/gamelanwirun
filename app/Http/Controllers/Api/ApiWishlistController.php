@@ -57,14 +57,17 @@ class ApiWishlistController extends Controller
     public function index()
     {
 
-        $user = $this->user();
+        $id = $this->user()->id;
         $iklan = Iklan::get();
         $wishlists = DB::table('wishlists')
                       ->join('iklans', 'wishlists.iklan_id', '=', 'iklans.id')
                       ->join('users', 'iklans.user_id', '=', 'users.id')
-                      ->where("wishlists.user_id", "=", "$user->id")
+                      ->where("wishlists.user_id", "=", $id)
                       ->select('wishlists.created_at', 'wishlists.id', 'iklans.id as iklan_id', 'iklans.judul', 'iklans.image1', 'iklans.volume', 'iklans.harga', 'iklans.deskripsi', 'users.id as user_id', 'users.image as user_image', 'users.store_name')
                       ->get();
+
+
+
 
         foreach($wishlists as $wishlist){
           $wishlist->view_iklan = [
