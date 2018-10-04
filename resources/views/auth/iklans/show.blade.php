@@ -15,21 +15,9 @@
                                 <tr>
                                     <th>Gambar</th>
                                     <td>
-                                      @if($iklan->image1)
-                                      <img src="{{ asset('images/iklans/' . $iklan->image1) }}" class="img-responsive">
-                                      @endif
-                                      @if($iklan->image2)
-                                      <img src="{{ asset('images/iklans/' . $iklan->image2) }}" class="img-responsive">
-                                      @endif
-                                      @if($iklan->image3)
-                                      <img src="{{ asset('images/iklans/' . $iklan->image3) }}" class="img-responsive">
-                                      @endif
-                                      @if($iklan->image4)
-                                      <img src="{{ asset('images/iklans/' . $iklan->image4) }}" class="img-responsive">
-                                      @endif
-                                      @if($iklan->image5)
-                                      <img src="{{ asset('images/iklans/' . $iklan->image5) }}" class="img-responsive">
-                                      @endif
+                                      @foreach($iklan->photos as $photo)
+                                      <img src="{{ asset('images/iklans/' . $photo->filename) }}" class="img-responsive img-thumbnail" style="margin-bottom: 5px">
+                                      @endforeach
                                     </td>
                                 </tr>
     							<tr>
@@ -100,9 +88,12 @@
                         <a href="{{ route('iklans.edit', $iklan->id) }}" class="btn btn-primary btn-block">Edit</a>
                             <hr/>
                             <form method="POST" action="{{ route('iklans.destroy', $iklan->id) }}">
-                            <input type="submit" value="Hapus" class="btn btn-danger btn-block"> <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
+                            <input type="submit" value="Hapus" class="btn btn-danger btn-block">
+                            <input type="hidden" name="_token" value="{{ Session::token() }}">
+                            {{ method_field('DELETE') }}
                             <hr/>
-                            <a href="{{ route('iklans.index') }}" class="btn btn-warning btn-block btn-h1-spacing">Kembali</a>
+                            <a href="{{ route('iklans.index') }}"
+                            class="btn btn-warning btn-block btn-h1-spacing">Kembali</a>
                             </form>
 						</div>
 					</div>

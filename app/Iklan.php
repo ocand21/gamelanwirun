@@ -8,14 +8,8 @@ use App\User;
 
 class Iklan extends Model
 {
-    protected $fillable = ['judul', 'image1', 'image2', 'image3', 'image4', 'image5', 'url', 'user_id', 'category_id', 'deskripsi', 'volume', 'stock', 'harga', 'notelp', 'view_count'];
+    protected $fillable = ['judul', 'url', 'user_id', 'category_id', 'deskripsi', 'volume', 'stock', 'harga', 'notelp', 'view_count'];
 
-    protected $attributes = [
-      'image2' => 'logo.png',
-      'image3' => 'logo.png',
-      'image4' => 'logo.png',
-      'image5' => 'logo.png',
-    ];
 
     public function category(){
       return $this->belongsTo('App\Category');

@@ -57,9 +57,11 @@
 
           <div class="col-md-4">
 						<div class="blankpage-main">
-              <a href="{{ route('auth.profil.edit', Auth::user()->id) }}" class="btn btn-primary btn-block">Edit Profil</a>
+              <a href="{{ route('auth.profil.edit', Auth::user()->id) }}"
+                class="btn btn-primary btn-block">Edit Profil</a>
                             <hr/>
-              <a href="{{ route('auth.profil.changePassword') }}" class="btn btn-warning btn-block btn-h1-spacing">Ganti Password</a>
+              <a href="{{ route('auth.profil.changePassword') }}"
+              class="btn btn-warning btn-block btn-h1-spacing">Ganti Password</a>
 						</div>
 					</div>
     </div>

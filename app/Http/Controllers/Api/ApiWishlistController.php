@@ -21,7 +21,7 @@ class ApiWishlistController extends Controller
 {
 
     public function __construct(){
-      $this->middleware('jwt.auth');
+      $this->middleware(['jwt.auth']);
     }
 
     public function getAuthenticationUser(){
@@ -65,8 +65,6 @@ class ApiWishlistController extends Controller
                       ->where("wishlists.user_id", "=", $id)
                       ->select('wishlists.created_at', 'wishlists.id', 'iklans.id as iklan_id', 'iklans.judul', 'iklans.image1', 'iklans.volume', 'iklans.harga', 'iklans.deskripsi', 'users.id as user_id', 'users.image as user_image', 'users.store_name')
                       ->get();
-
-
 
 
         foreach($wishlists as $wishlist){
@@ -134,7 +132,7 @@ class ApiWishlistController extends Controller
      */
     public function destroy($id)
     {
-        $wishlist = Wishlist::findOrFail($id);
+        $wishlist = Wishlist::where('iklan_id', $id);
         $wishlist->delete();
 
         $response = [

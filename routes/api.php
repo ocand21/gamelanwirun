@@ -19,6 +19,10 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function(){
 
+	Route::post('user/changepic', 'Api\ApiProfilController@changePicture');
+
+	Route::get('iklan/photos', 'Api\ApiIklanController@getPhotos');
+
 	Route::resource('category', 'Api\ApiCategoryController', [
 		'except' => ['create', 'edit', 'store', 'update', 'destroy']
 	]);
@@ -27,9 +31,24 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function(){
 		'except' => ['create', 'edit', 'store', 'update', 'destroy']
 	]);
 
+	Route::get('iklanLog/{iklan}', 'Api\ApiIklanController@showIn');
+
+	// if (Auth::guest()) {
+	// 	Route::get('iklan/{iklan}', 'Api\ApiIklanController@show');
+	// } else {
+	// 	Route::get('iklan/{iklan}', 'ApiIklanController@showIn');
+	// }
+
+	// Route::group(['middleware' => 'jwt.check'], function () {
+ //        Route::get('iklan/{iklan}', ['uses' => 'Api\ApiIklanController@show']);
+ //    });
+
+
 	Route::resource('wishlist', 'Api\ApiWishlistController', [
 		'except' => ['create', 'edit', 'show', 'update']
 	]);
+
+	Route::delete('wishlist/{iklan}/delete', 'Api\ApiWishlistController@delete');
 
 	Route::post('iklan/{iklan}/favourites', [
 		'uses' => 'Api\ApiVIklanController@storeFavourites'
@@ -57,6 +76,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function(){
 
 	Route::post('/user/signin', [
 		'uses' => 'Api\AuthController@signin'
+	]);
+
+	Route::get('/user/logout', [
+		'uses' => 'Api\AuthController@logout'
 	]);
 
 	Route::post('/user/recover', [

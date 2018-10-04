@@ -36,7 +36,8 @@
                     <td><img src="{{ asset('images/iklans/' . $iklan->image2) }}" align="center" class="img-responsive"></td>
                     <td>
                       <form method="POST" action="{{ route('iklans.delimage2', $iklan->id) }}">
-                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
+                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token"
+                      value="{{ Session::token() }}"> {{ method_field('DELETE') }}
                       </form>
                     </td>
                     @endif
@@ -46,7 +47,8 @@
                     <td><img src="{{ asset('images/iklans/' . $iklan->image3) }}" align="center" class="img-responsive"></td>
                     <td>
                       <form method="POST" action="{{ route('iklans.delimage3', $iklan->id) }}">
-                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
+                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token"
+                      value="{{ Session::token() }}"> {{ method_field('DELETE') }}
                       </form>
                     </td>
                     @endif
@@ -56,7 +58,8 @@
                     <td><img src="{{ asset('images/iklans/' . $iklan->image4) }}" align="center" class="img-responsive"></td>
                     <td>
                       <form method="POST" action="{{ route('iklans.delimage4', $iklan->id) }}">
-                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
+                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token"
+                      value="{{ Session::token() }}"> {{ method_field('DELETE') }}
                       </form>
                     </td>
                     @endif
@@ -66,7 +69,8 @@
                     <td><img src="{{ asset('images/iklans/' . $iklan->image5) }}" align="center" class="img-responsive"></td>
                     <td>
                       <form method="POST" action="{{ route('iklans.delimage5', $iklan->id) }}">
-                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
+                      <input type="submit" value="Hapus" class="btn btn-danger"> <input type="hidden" name="_token"
+                      value="{{ Session::token() }}"> {{ method_field('DELETE') }}
                       </form>
                     </td>
                     @endif

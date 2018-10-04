@@ -19,26 +19,10 @@
               {{ csrf_field() }}
             <div class="form-group">
     									<div class="btn btn-default btn-file">
-    										<i class="fa fa-image"> </i>Image 1
-    										<input type="file" name="image1" class="form-control"/>
+    										<i class="fa fa-image"> </i>Foto
+    										<input type="file" name="photos[]" class="form-control" multiple/>
     									</div>
-                      <div class="btn btn-default btn-file">
-    										<i class="fa fa-image"> </i>Image 2
-    										<input type="file" name="image2" class="form-control"/>
-    									</div>
-                      <div class="btn btn-default btn-file">
-    										<i class="fa fa-image"> </i>Image 3
-    										<input type="file" name="image3" class="form-control"/>
-    									</div>
-    								</div>
-                    <div class="btn btn-default btn-file">
-                      <i class="fa fa-image"> </i>Image 4
-                      <input type="file" name="image4" class="form-control"/>
-                    </div>
-                    <div class="btn btn-default btn-file">
-                      <i class="fa fa-image"> </i>Image 5
-                      <input type="file" name="image5" class="form-control"/>
-                    </div>
+            </div>
             <div class="form-group">
 							<label>Nama Instrumen*</label>
 							<input type="text" class="form-control" name="judul">

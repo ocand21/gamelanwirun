@@ -67,11 +67,8 @@ class IklanController extends Controller
             'judul' => 'required|max:255',
             'user_id' => 'required',
             'harga' => 'required',
-            'image1' => 'required|image|mimes:jpeg,bmp,png',
-            'image2' => 'image|mimes:jpeg,bmp,png',
-            'image3' => 'image|mimes:jpeg,bmp,png',
-            'image4' => 'image|mimes:jpeg,bmp,png',
-            'image5' => 'image|mimes:jpeg,bmp,png',
+            'photos' => 'required|array',
+            'photos.*' => 'required|image|mimes:jpeg,bmp,png',
         ));
 
         $iklan = new Iklan;
@@ -83,61 +80,78 @@ class IklanController extends Controller
         $iklan->volume = $request->input('volume');
         $iklan->harga = $request->input('harga');
         $iklan->stock = $request->input('stock');
-        $iklan->image1 = $request->input('image1');
-        $iklan->image2 = $request->input('image2');
-        $iklan->image3 = $request->input('image3');
-        $iklan->image4 = $request->input('image4');
-        $iklan->image5 = $request->input('image5');
 
-        if ($request->hasFile('image1')) {
-          $image1 = $request->file('image1');
-          $filename = time() . '.' . $image1->getClientOriginalName();
-          $location = public_path('images/iklans/' . $filename);
-          Image::make($image1)->save($location);
-          $iklan->image1 = $filename;
-        }
-
-        if ($request->hasFile('image2')) {
-          $image2 = $request->file('image2');
-          $filename = time() . '.' . $image2->getClientOriginalName();
-          $location = public_path('images/iklans/' . $filename);
-          Image::make($image2)->save($location);
-          $iklan->image2 = $filename;
-        } else {
-          $iklan->image2 = 'logo.png';
-        }
-
-        if ($request->hasFile('image3')) {
-          $image3 = $request->file('image3');
-          $filename = time() . '.' . $image3->getClientOriginalName();
-          $location = public_path('images/iklans/' . $filename);
-          Image::make($image3)->save($location);
-          $iklan->image3 = $filename;
-        } else {
-          $iklan->image3 = 'logo.png';
-        }
-
-        if ($request->hasFile('image4')) {
-          $image4 = $request->file('image4');
-          $filename = time() . '.' . $image4->getClientOriginalName();
-          $location = public_path('images/iklans/' . $filename);
-          Image::make($image4)->save($location);
-          $iklan->image4 = $filename;
-        } else {
-          $iklan->image4 = 'logo.png';
-        }
-
-        if ($request->hasFile('image5')) {
-          $image5 = $request->file('image5');
-          $filename = time() . '.' . $image5->getClientOriginalName();
-          $location = public_path('images/iklans/' . $filename);
-          Image::make($image5)->save($location);
-          $iklan->image5 = $filename;
-        } else {
-          $iklan->image4 = 'logo.png';
-        }
 
         $iklan->save();
+
+        $files = $request->file('photos');
+
+        if ($files[0] !='') {
+          foreach($files as $file) {
+            $filename = time() . '.' . $file->getClientOriginalName();
+            $location = public_path('images/iklans/' . $filename);
+            Image::make($file)->save($location);
+
+            IklansPhoto::create([
+              'iklan_id' => $iklan->id,
+              'filename' => $filename
+            ]);
+          }
+        }
+
+        // $iklan->image1 = $request->input('image1');
+        // $iklan->image2 = $request->input('image2');
+        // $iklan->image3 = $request->input('image3');
+        // $iklan->image4 = $request->input('image4');
+        // $iklan->image5 = $request->input('image5');
+
+        // if ($request->hasFile('image1')) {
+        //   $image1 = $request->file('image1');
+        //   $filename = time() . '.' . $image1->getClientOriginalName();
+        //   $location = public_path('images/iklans/' . $filename);
+        //   Image::make($image1)->save($location);
+        //   $iklan->image1 = $filename;
+        // }
+        //
+        // if ($request->hasFile('image2')) {
+        //   $image2 = $request->file('image2');
+        //   $filename = time() . '.' . $image2->getClientOriginalName();
+        //   $location = public_path('images/iklans/' . $filename);
+        //   Image::make($image2)->save($location);
+        //   $iklan->image2 = $filename;
+        // } else {
+        //   $iklan->image2 = 'logo.png';
+        // }
+        //
+        // if ($request->hasFile('image3')) {
+        //   $image3 = $request->file('image3');
+        //   $filename = time() . '.' . $image3->getClientOriginalName();
+        //   $location = public_path('images/iklans/' . $filename);
+        //   Image::make($image3)->save($location);
+        //   $iklan->image3 = $filename;
+        // } else {
+        //   $iklan->image3 = 'logo.png';
+        // }
+        //
+        // if ($request->hasFile('image4')) {
+        //   $image4 = $request->file('image4');
+        //   $filename = time() . '.' . $image4->getClientOriginalName();
+        //   $location = public_path('images/iklans/' . $filename);
+        //   Image::make($image4)->save($location);
+        //   $iklan->image4 = $filename;
+        // } else {
+        //   $iklan->image4 = 'logo.png';
+        // }
+        //
+        // if ($request->hasFile('image5')) {
+        //   $image5 = $request->file('image5');
+        //   $filename = time() . '.' . $image5->getClientOriginalName();
+        //   $location = public_path('images/iklans/' . $filename);
+        //   Image::make($image5)->save($location);
+        //   $iklan->image5 = $filename;
+        // } else {
+        //   $iklan->image4 = 'logo.png';
+        // }
 
         Session::flash('flash_message','Iklan berhasil diterbitkan!');
 
@@ -153,7 +167,7 @@ class IklanController extends Controller
     public function show($id)
     {
         //
-        $iklan = Iklan::with('users', 'category')->where('id', $id)->firstOrFail();
+        $iklan = Iklan::with('users', 'category', 'photos')->where('id', $id)->firstOrFail();
         // $photos = DB::table('iklans_photos')->select('iklans_photos.id', 'iklans_photos.filename', 'iklans_photos.iklan_id', 'iklans.id')
         //               ->join('iklans', 'iklans_photos.iklan_id', '=', 'iklans.id')
         //               ->where('iklans_photos.iklan_id', '=', $id)

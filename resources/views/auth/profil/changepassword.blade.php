@@ -14,7 +14,8 @@
 							<div class="alert alert-info">
 								Silakan masukkan password lama dan password baru
 							</div>
-              <form class="com-mail" action="{{ route('auth.profil.changePassword') }}" method='POST' enctype="multipart/form-data">
+              <form class="com-mail" action="{{ route('auth.profil.changePassword') }}" method='POST'
+              enctype="multipart/form-data">
           <div class="form-group">
             <label>Password Lama</label>
             <input type="password" class="form-control" name="current_password">

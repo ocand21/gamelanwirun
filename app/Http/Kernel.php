@@ -57,9 +57,9 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'cors' => \Barryvdh\Cors\HandleCors::class,
-        'jwt.auth' => \App\Http\Middleware\VerifyJWTToken::class,
-        // 'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-        // 'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        'jwt.check' => \Tymon\JWTAuth\Middleware\BaseMiddleware::class,
+        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];

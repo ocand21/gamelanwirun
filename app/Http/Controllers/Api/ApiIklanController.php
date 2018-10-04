@@ -21,7 +21,7 @@ class ApiIklanController extends Controller
 
     public function __construct(){
       $this->middleware('jwt.auth',[
-        'except' => ['index', 'show', 'viewCount', 'contactCount']
+        'except' => ['index', 'show', 'viewCount', 'contactCount', 'getPhotos']
       ]);
     }
 
@@ -36,7 +36,8 @@ class ApiIklanController extends Controller
      */
     public function index()
     {
-      $iklans = DB::table('iklans')->select('iklans.id', 'iklans.judul', 'iklans.image1', 'iklans.volume', 'iklans.harga', 'iklans.created_at', 'users.id as user_id', 'users.image as user_image', 'users.store_name')
+      $iklans = DB::table('iklans')->select('iklans.id', 'iklans.judul', 'iklans.volume', 'iklans.harga', 'iklans_photos.filename', 'iklans.created_at', 'users.id as user_id', 'users.image as user_image', 'users.store_name')
+                ->join('iklans_photos', 'iklans.id', '=', 'iklans_photos.iklan_id')
                 ->join('users', 'iklans.user_id', '=', 'users.id')
                 ->groupBy('iklans.id')->orderBy('iklans.id', 'desc')
                 ->get();
@@ -140,6 +141,8 @@ class ApiIklanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
     public function show($id)
     {
         // $iklan = Iklan::with('users', 'photos', 'category')->where('id', $id)->firstOrFail();
@@ -149,7 +152,29 @@ class ApiIklanController extends Controller
         //               ->groupBy('iklans_photos.id')->get();
         //
 
-        $iklan = Iklan::with('users', 'category')->where('id', $id)->firstOrFail();
+
+
+
+
+        // if (!$this->user()) {
+          $iklan = Iklan::with('photos', 'users')->where('id', $id)->firstOrFail();
+
+          $iklan->view_iklan = [
+              'href' => 'api/v1/iklan',
+              'method' => 'GET'
+          ];
+
+          $response = [
+              'msg' => 'Informasi Iklan',
+              'iklan' => $iklan
+          ];
+
+        // } else {
+
+        // }
+
+
+
         // $iklan = DB::table('iklans')->select('iklans.*','iklans_photos.filename', 'iklans_photos.iklan_id','users.id as user_id', 'users.image as user_image', 'users.name')
         //           ->join('users', 'iklans.user_id', '=', 'users.id')
         //           ->join('iklans_photos', 'iklans_photos.iklan_id', '=', 'iklans.id')
@@ -164,17 +189,32 @@ class ApiIklanController extends Controller
         //                   ->groupBy('iklans.id')->orderBy('iklans.id', 'desc')
         //                   ->get();
 
-        $iklan->view_iklan = [
-            'href' => 'api/v1/iklan',
-            'method' => 'GET'
-        ];
 
-        $response = [
-            'msg' => 'Informasi Iklan',
-            'iklan' => $iklan
-        ];
 
         return response()->json($response, 200);
+    }
+
+    public function showIn($id){
+      $iklan = Iklan::with('photos', 'users')->where('id', $id)->firstOrFail();
+      $user_id = $this->user()->id;
+      $wishlists = DB::table('wishlists')
+                    ->where("wishlists.iklan_id", "=", $id)
+                    ->where("wishlists.user_id", "=", $user_id)
+                    ->select('wishlists.id')
+                    ->get();
+
+                  $iklan->view_iklan = [
+                        'href' => 'api/v1/iklan',
+                        'method' => 'GET'
+                    ];
+
+                    $response = [
+                        'msg' => 'Informasi Iklan',
+                        'iklan' => $iklan,
+                        'wishlists' => $wishlists
+                    ];
+
+      return response()->json($response, 200);
     }
 
     /**
@@ -289,6 +329,18 @@ class ApiIklanController extends Controller
 
 
 
+
+    }
+
+    public function getPhotos(){
+      $photos = IklansPhoto::get();
+
+      $response = [
+              'msg' => 'Informasi Iklan',
+              'photos' => $photos
+      ];
+
+      return response()->json($response, 200);
 
     }
 

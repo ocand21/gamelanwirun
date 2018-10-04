@@ -15,7 +15,8 @@
 							<div class="alert alert-info">
 								Silakan berikan informasi mengenai iklan
 							</div>
-              <form class="com-mail" action="{{ route('auth.profil.update', $profil->id) }}" method='POST' enctype="multipart/form-data">
+              <form class="com-mail" action="{{ route('auth.profil.update', $profil->id) }}" method='POST'
+                enctype="multipart/form-data">
                 <div class="form-group">
     									<div class="btn btn-default btn-file">
     										<i class="fa fa-image"> </i> Image

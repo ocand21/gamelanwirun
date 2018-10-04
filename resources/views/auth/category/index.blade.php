@@ -28,7 +28,8 @@
                       <td><img src="{{ asset('images/' . $category->image) }}" height="48px" width="48px"></td>
                       <td>{{ $category->name }}</td>
                       <td><form method="POST" action="{{ route('category.destroy', $category->id) }}">
-                      <input type="submit" value="Hapus" class="btn btn-danger btn-block"> <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
+                      <input type="submit" value="Hapus" class="btn btn-danger btn-block">
+                      <input type="hidden" name="_token" value="{{ Session::token() }}"> {{ method_field('DELETE') }}
                       </form>
                       </td>
                     </tr>

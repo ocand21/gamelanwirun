@@ -18,7 +18,7 @@ use JWTAuth;
 class ApiProfilController extends Controller
 {
     public function __construct(){
-      $this->middleware('jwt.auth',[
+      $this->middleware(['jwt.auth'],[
         'except' => ['publicProfile']
       ]);
     }
@@ -63,13 +63,13 @@ class ApiProfilController extends Controller
         $this->validate($request, [
           'name' => 'required|string|max:255',
           'address' => 'required|string|min:5',
-          'image' => 'image'
+          'image' => 'image|mimes:jpg,jpeg,png'
         ]);
       } else if ($request->input('notelp') == $user->notelp) {
         $this->validate($request, [
           'name' => 'required|string|max:255',
-          'image' => 'image',
           'address' => 'required|string|min:5',
+          'image' => 'image|mimes:jpg,jpeg,png'
         ]);
       } else {
         $this->validate($request, [
@@ -77,7 +77,8 @@ class ApiProfilController extends Controller
           'email' => 'required|string|email|max:255|unique:users',
           'notelp' => 'required|string|max:12|unique:users',
           'address' => 'required|string|min:5',
-          'image' => 'image'
+          'image' => 'image|mimes:jpg,jpeg,png'
+
         ]);
       }
 
@@ -87,15 +88,15 @@ class ApiProfilController extends Controller
       $user->address = $request->get('address');
 
       if ($request->hasFile('image')) {
-          $image = $request->file('image');
-          $filename = time() . '.' . $image->getClientOriginalName();
-          $location = public_path('images/users/' . $filename);
-          Image::make($image)->save($location);
-          $oldFilename = $user->image;
+        $image = $request->file('image');
+        $filename = "img".rand(9,9999).".jpg";
+        $location = public_path('images/users/' . $filename);
+        Image::make($image)->save($location);
 
-          $user->image = $filename;
-          Storage::delete($oldFilename);
+        $user->image = $filename;
       }
+
+
 
       if (!$user->save()) {
         return response()->json([
@@ -143,6 +144,42 @@ class ApiProfilController extends Controller
       $response = [
         'msg' => 'Password berhasil diubah',
         'new_password' => $user->password
+      ];
+
+      return response()->json($response, 200);
+
+    }
+
+    public function changePicture(Request $request){
+      $this->validate($request, [
+        'image' => 'image|mimes:jpg,jpeg,png'
+      ]);
+
+      $user = $this->user();
+
+      $image = $request->file('image');
+      $filename = "img".rand(9,9999).".jpg";
+      $location = public_path('images/users/' . $filename);
+      Image::make($image)->save($location);
+
+      $user->image = $filename;
+
+      $user->save();
+
+      if (!$user->save()) {
+        return response()->json([
+          'msg' => 'Gagal mengubah profil'
+        ], 404);
+      }
+
+      $user->view_profil = [
+        'msg' => 'api/v1/user/myprofile' . $user->id,
+        'method' => 'GET'
+      ];
+
+      $response = [
+        'msg' => 'Profil berhasil dirubah',
+        'user' => $user
       ];
 
       return response()->json($response, 200);
