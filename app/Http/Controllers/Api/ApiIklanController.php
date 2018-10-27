@@ -200,7 +200,7 @@ class ApiIklanController extends Controller
       $wishlists = DB::table('wishlists')
                     ->where("wishlists.iklan_id", "=", $id)
                     ->where("wishlists.user_id", "=", $user_id)
-                    ->select('wishlists.id')
+                    ->select('wishlists.id', 'wishlists.iklan_id')
                     ->get();
 
                   $iklan->view_iklan = [
@@ -211,7 +211,7 @@ class ApiIklanController extends Controller
                     $response = [
                         'msg' => 'Informasi Iklan',
                         'iklan' => $iklan,
-                        'wishlists' => $wishlists
+                        'wishlists' => $wishlists,
                     ];
 
       return response()->json($response, 200);
